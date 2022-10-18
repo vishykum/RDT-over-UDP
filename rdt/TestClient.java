@@ -30,11 +30,28 @@ public class TestClient {
 	     int dst_port = Integer.parseInt(args[1]);
 	     int local_port = Integer.parseInt(args[2]);
 	     	      
-	     RDT rdt = new RDT(hostname, dst_port, local_port, 1, 3);
-	     RDT.setLossRate(0.4);
+	     RDT rdt = new RDT(hostname, dst_port, local_port, 3, 3); //Change first 3 into 1
+	     RDT.setLossRate(0.5);
 	  
 	     byte[] buf = new byte[RDT.MSS];
+
 	     byte[] data = new byte[10];
+
+		 switch(RDT.protocol) {
+			case RDT.GBN:
+				System.out.println("Using Go Back-N protocol...\n\n");
+				break;
+			case RDT.SR:
+				System.out.println("Using Selective Repeat protocol...\n\n");
+				break;
+			default:
+				System.out.println("Error: Using Unkown protocol...\n\n");
+				break;
+		 }		 	
+
+
+		//  System.out.println("Payload: " + dataStr);
+
 	     for (int i=0; i<10; i++)
 	    	 data[i] = 0;
 	     rdt.send(data, 10);
@@ -43,6 +60,9 @@ public class TestClient {
 	    	 data[i] = 1;
 	     rdt.send(data, 10);
 	     
+		//  for(int i = 0; i < 10000000 ; i++); //DELETE THIS
+
+
 	     for (int i=0; i<10; i++)
 	    	 data[i] = 2;
 	     rdt.send(data, 10);
@@ -56,10 +76,11 @@ public class TestClient {
 	     rdt.send(data, 10);
 	 
 	     
+
 	     System.out.println(System.currentTimeMillis() + ":Client has sent all data " );
-	     System.out.flush();
+	    //  System.out.flush();
 	     
-	     rdt.receive(buf, RDT.MSS);
+	    //  rdt.receive(buf, RDT.MSS);
 	     rdt.close();
 	     System.out.println("Client is done " );
 	}

@@ -20,6 +20,7 @@ public class RDTSegment {
 	public byte[] data;
 
 	public boolean ackReceived;
+	public boolean sentAbove; // Useful for recvBuf for SR
 	
 	public TimeoutHandler timeoutHandler;  // make it for every segment, 
 	                                       // will be used in selective repeat
@@ -43,16 +44,15 @@ public class RDTSegment {
 		length = 0;
 		rcvWin = 0;
 		ackReceived = false;
+		sentAbove = false;
 	}
 	
 	public boolean containsAck() {
-		// complete
-		return true;
+		return (flags != 0);
 	}
 	
 	public boolean containsData() {
-		// complete
-		return true;
+		return (length != 0);
 	}
 
 	public int computeChecksum() {
@@ -62,6 +62,16 @@ public class RDTSegment {
 	public boolean isValid() {
 		// complete
 		return true;
+	}
+
+	public void setData(byte[] dataCopy, int size) {
+		if(size <= 0) {return;}
+		
+		length = size;
+
+		for(int i = 0; i < size; i++) {
+			data[i] = dataCopy[i];
+		}
 	}
 	
 	// converts this seg to a series of bytes
@@ -77,7 +87,7 @@ public class RDTSegment {
 		for (int i=0; i<length; i++)
 			payload[i+HDR_SIZE] = data[i];
 	}
-	
+
 	public void printHeader() {
 		System.out.println("SeqNum: " + seqNum);
 		System.out.println("ackNum: " + ackNum);

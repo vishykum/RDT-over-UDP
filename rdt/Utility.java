@@ -14,15 +14,18 @@ public class Utility {
 	public static final int MAX_NETWORK_DELAY = 200; // msec
 	
 	public static void udp_send (RDTSegment seg, DatagramSocket socket, 
-			InetAddress ip, int port) {
-			
+			InetAddress ip, int port) { //Change data[] payload to RDTSegment seg
+
 		double d = RDT.random.nextDouble();
 		if ( d < RDT.lossRate) { // simulate network loss
 			System.out.println(System.currentTimeMillis()+":udp_send: Lost Segment: seqNum=" + 
 					       seg.seqNum + "  ackNum=" + seg.ackNum + " ***");
-			System.out.flush();
+
+			System.out.println("Packet lost!");
+			// System.out.flush();
 	        return;
 	    }
+		
 		// prepare UDP payload 
 		int payloadSize = seg.length + RDTSegment.HDR_SIZE;
 		byte[] payload = new byte[payloadSize];
@@ -33,8 +36,9 @@ public class Utility {
 		// send over udp
 		// simulate random network delay
 		int delay = RDT.random.nextInt(MAX_NETWORK_DELAY);
+
 		try {
-			Thread.sleep(delay);
+			// Thread.sleep(delay);
 			socket.send(new DatagramPacket(payload, payloadSize, ip, port));
 		} catch (Exception e) {
 			System.out.println("udp_send: " + e);
@@ -43,7 +47,9 @@ public class Utility {
 		System.out.println(System.currentTimeMillis()+":udp_send: sent Segment: seqNum=" 
 					+ seg.seqNum + "  ackNum=" + seg.ackNum
 					+ "   After delay= " + delay) ;
-		System.out.flush();
+
+		System.out.println("Packet sent!"); //Delete this
+		// System.out.flush();
 		//seg.dump();
 	}
 	
