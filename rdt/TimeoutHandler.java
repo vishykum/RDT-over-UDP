@@ -1,14 +1,3 @@
-/**
-* Name: Vishal Venkatakumar
-* Login name: vvenkata
-*/
-
-
-/**
- * @author mhefeeda
- *
- */
-
 package rdt;
 
 import java.net.DatagramSocket;
