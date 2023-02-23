@@ -1,14 +1,3 @@
-/**
-* Name: Vishal Venkatakumar
-* Login name: vvenkata
-*/
-
-
-/**
- * 
- * @author mohamed
- *
- */
 package rdt;
 
 import java.io.*;
